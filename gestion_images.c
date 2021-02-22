@@ -24,7 +24,7 @@ int main()
     struct MetaData metadonnees;
 
 	int retour;
-	
+
     printf("-> Debut!\n");
 
 	// exemple d'appel de fonction

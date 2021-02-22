@@ -1,0 +1,3 @@
+#!/bin/bash
+gcc -Wall -o gestion_images gestion_images.c bibliotheque_images.c
+set /p DUMMY=Hit ENTER to continue...
