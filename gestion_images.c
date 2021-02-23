@@ -7,6 +7,7 @@ Description: Fichier de distribution pour GEN145.
 ********/
 
 #include <stdio.h>
+#include <string.h>
 #include "bibliotheque_images.h"
 
 int image1[MAX_HAUTEUR][MAX_LARGEUR];
@@ -28,11 +29,18 @@ int main()
     printf("-> Debut!\n");
 
 	// exemple d'appel de fonction
-    retour = pgm_lire(nom, image1, 
+    char filename[] = "Sherbrooke_Frontenac_nuit.pgm";
+    retour = pgm_lire(filename, image1, 
                       &lignes1, &colonnes1, 
                       &maxval, &metadonnees);
 
 	// exemple detraitement d'un code de retour (erreur ou reussite)
+    printf("%s\n",metadonnees.auteur);
+    printf("%s\n",metadonnees.dateCreation);
+    printf("%s\n",metadonnees.lieuCreation);
+    printf("%d %d\n",lignes1, colonnes1);
+    printf("%d\n",maxval);
+
 	printf("-> Retour: ");
 	if (retour == OK)
 		printf("-> OK");
@@ -41,7 +49,8 @@ int main()
 	printf("\n");
 
 	// autre exemple d'appel de fonction
-    pgm_ecrire(nom, image1, 
+    char filename2[] = "SFUCK_Frontenac_nuit.pgm";
+    pgm_ecrire(filename2, image1, 
                lignes1, colonnes1, 
                maxval, metadonnees);
 

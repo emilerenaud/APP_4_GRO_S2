@@ -12,6 +12,7 @@ Description: Solution de la problematique pour GEN145.
 #define BIBLIOTHEQUE_IMAGES_H
 
 #include <stdio.h>
+#include <string.h>
 
 // Valeurs maximales pour les images
 #define MAX_LARGEUR 256
