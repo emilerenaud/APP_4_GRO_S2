@@ -138,21 +138,21 @@ int pgm_ecrire(char nom_fichier[], int matrice[MAX_HAUTEUR][MAX_LARGEUR],
     fprintf(pictureFile,"P2\n");
     fprintf(pictureFile,"%d %d\n",colonnes,lignes);
     fprintf(pictureFile,"%d\n",maxval);
-    int compteur_col = 0;
+
     int compteur_char = 0;
     for(int i = 0; i < lignes; i++)
     {
         for(int j = 0; j < colonnes; j++)
         {
             int longueurChar = 0;
-            if(matrice[i][j] >= 100)
+            if(matrice[i][j] >= 100) // check lenght on char.
                 longueurChar = 4;
             else if(matrice[i][j] >= 10)
                 longueurChar = 3;
             else
                 longueurChar = 2;
         
-            if(compteur_char + longueurChar >= 80)
+            if(compteur_char + longueurChar >= 80) // dont exceed 80 char.
             {
                 fprintf(pictureFile,"\n");
                 compteur_char = 0;
@@ -160,14 +160,112 @@ int pgm_ecrire(char nom_fichier[], int matrice[MAX_HAUTEUR][MAX_LARGEUR],
             compteur_char += longueurChar;
 
             fprintf(pictureFile,"%d ",matrice[i][j]);
-            // compteur_col ++;
-            // if(compteur_col >= 20)
-            // {
-            //     fprintf(pictureFile,"\n");
-            //     compteur_col = 0;
-            // }
         }
     }
     fclose(pictureFile);
     return OK;
 }
+
+
+int pgm_copier(int matrice1[MAX_HAUTEUR][MAX_LARGEUR],
+               int lignes1, int colonnes1,
+               int matrice2[MAX_HAUTEUR][MAX_LARGEUR],
+               int *p_lignes2, int *p_colonnes2)
+{
+    if(lignes1 == 0 || colonnes1 == 0)
+        return -1;
+    
+    *p_lignes2 = lignes1;
+    *p_colonnes2 = colonnes1;
+
+    for(int i = 0; i < lignes1; i++)
+    {
+        for(int j = 0; j < colonnes1; j++)
+        {
+            matrice2[i][j] = matrice1[i][j];
+        }
+    }
+    return OK;
+
+}
+
+
+int pgm_creer_histogramme(int matrice[MAX_HAUTEUR][MAX_LARGEUR], 
+                          int lignes, int colonnes, int histogramme[MAX_VALEUR+1])
+{
+    // reset histogramme
+    for(int i = 0; i < MAX_VALEUR + 1; i++)
+        histogramme[i] = 0;
+
+    // increase histo at each value of the matrix
+    for(int i = 0; i < lignes; i++)
+    {
+        for(int j = 0; j < colonnes; j++)
+        {
+            histogramme[matrice[i][j]] ++;
+        }
+    }
+    return OK;
+}
+
+
+int pgm_couleur_preponderante(int matrice[MAX_HAUTEUR][MAX_LARGEUR], 
+                              int lignes, int colonnes)
+{
+    int histogramme[MAX_VALEUR + 1];
+    pgm_creer_histogramme(matrice,lignes,colonnes,histogramme);
+    int brightnessValue = 0;
+    int brightnessPos = 0;
+
+    for(int i = 0; i < MAX_VALEUR; i++) // find highest value
+    {
+        if(histogramme[i] > brightnessValue)
+        {
+            brightnessValue = histogramme[i];
+            brightnessPos = i;
+        }
+    }
+    return brightnessPos; // return the brightness value.
+}
+
+int pgm_eclaircir_noircir(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes, int colonnes, int maxval, int valeur)
+{
+    return 0;
+}
+
+
+int pgm_creer_negatif(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes, int colonnes, int maxval)
+{
+    return 0;
+}
+
+
+int pgm_extraire(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int lignes1, int colonnes1, int lignes2, int colonnes2, int *p_lignes, int *p_colonnes)
+{
+    return 0;
+}
+
+
+int pgm_sont_identiques(int matrice1[MAX_HAUTEUR][MAX_LARGEUR], int lignes1, int colonnes1, int matrice2[MAX_HAUTEUR][MAX_LARGEUR], int lignes2, int colonnes2)
+{
+    if(lignes1 != lignes2 || colonnes1 !=  colonnes2)
+        return -1;
+
+    for(int i = 0; i < lignes1; i++)
+    {
+        for(int j = 0; j < colonnes1; j++)
+        {
+            if(matrice1[i][j] != matrice2[i][j])
+                return 1;
+        }
+    }
+    return 0;
+}
+
+
+int pgm_pivoter90(int matrice[MAX_HAUTEUR][MAX_LARGEUR], int *p_lignes, int *p_colonnes, int sens)
+{
+    return 0;
+}
+
+
