@@ -2,6 +2,8 @@
 Fichier: bibliotheque_images.c
 Auteurs: Domingo Palao Munoz
          Charles-Antoine Brunet
+Modification 2021-02-25 : Émile Renaud
+                          Maxence Mougin
 Date: 25 octobre 2018
 Description: Fichier de distribution pour GEN145.
 ********/
@@ -300,17 +302,25 @@ int pgm_extraire(int matrice[MAX_HAUTEUR][MAX_LARGEUR],
 
     *p_lignes=lignes2-lignes1+1;
 	*p_colonnes=colonnes2-colonnes1+1;
-	int a=*p_lignes-1;
-	int b=*p_colonnes-1;
-	for (int i=lignes1;i<lignes2;i++)
+
+    int matrice2[MAX_HAUTEUR][MAX_LARGEUR];
+
+	for (int i=lignes1;i<=lignes2;i++)
 	{
-		for (int j=colonnes1;j<colonnes2;j++)
+		for (int j=colonnes1;j<=colonnes2;j++)
 		{
-			matrice[MAX_HAUTEUR-a][MAX_LARGEUR-b]=matrice[i][j];
-			b-=1;
+			matrice2[i-lignes1][j-colonnes1]=matrice[i][j];
+            
 		}
-		a-=1;
 	}
+
+    for(int i = 0; i < *p_lignes; i++)
+    {
+        for(int j = 0; j < *p_colonnes; j++)
+        {
+            matrice[i][j] = matrice2[i][j];
+        }
+    }
     return OK;
 }
 
@@ -338,39 +348,38 @@ int pgm_sont_identiques(int matrice1[MAX_HAUTEUR][MAX_LARGEUR],
 int pgm_pivoter90(int matrice[MAX_HAUTEUR][MAX_LARGEUR],
                   int *p_lignes, int *p_colonnes, int sens)
 {
-    int matrice2[MAX_HAUTEUR][MAX_LARGEUR];
-    int lignes2 = 0;
-    int colonnes2 = 0;
-    pgm_copier(matrice,*p_lignes,*p_colonnes,matrice2,&lignes2,&colonnes2);
+    int lignes2 = *p_lignes;
+    int colonnes2 = *p_colonnes;
 
-    // sens horaire.
-    if(sens == 1)
-    {
-        for(int i = 0; i < *p_lignes; i++)
-            {
-                for(int j = 0; j < *p_colonnes; j++)
-                {
-                    matrice2[i][j] = matrice[j][*p_colonnes-i];
-                }
-            }
-    }
-    else if(sens == 0)
-    {
-        for(int i = 0; i < *p_lignes; i++)
-            {
-                for(int j = 0; j < *p_colonnes; j++)
-                {
-                    matrice2[i][j] = matrice[*p_lignes-j][i];
-                }
-            }
-            *p_lignes = colonnes2;
-            *p_colonnes = lignes2;
-    }
-    else
-    {
+    if(sens != 0 && sens != 1)
         return ERREUR;
-    }
+    
+    
+    int MatriceCopie[MAX_HAUTEUR][MAX_LARGEUR];
 
+	for (int a=0;a<*p_lignes;a++)
+	{
+		for (int b=0;b<*p_colonnes;b++)
+		{
+			MatriceCopie[a][b]=matrice[a][b];
+		}
+	}
+
+	for (int i=0;i<*p_lignes;i++)
+	{
+		for (int j=0;j<*p_colonnes;j++)
+		{
+			if (sens==1)
+			{
+				matrice[j][*p_lignes-i-1]=MatriceCopie[i][j];
+
+			}
+			else
+			{
+				matrice[*p_colonnes-j-1][i]=MatriceCopie[i][j];
+			}
+		}
+	}
     *p_lignes = colonnes2;
     *p_colonnes = lignes2;
     return OK;
@@ -587,43 +596,44 @@ int ppm_sont_identiques(struct RGB matrice1[MAX_HAUTEUR][MAX_LARGEUR], int ligne
 
 int ppm_pivoter90(struct RGB matrice[MAX_HAUTEUR][MAX_LARGEUR], int *p_lignes, int *p_colonnes, int sens)
 {
-    struct RGB matrice2[MAX_HAUTEUR][MAX_LARGEUR];
-    int lignes2 = 0;
-    int colonnes2 = 0;
-    ppm_copier(matrice,*p_lignes,*p_colonnes,matrice2,&lignes2,&colonnes2);
+    int lignes2 = *p_lignes;
+    int colonnes2 = *p_colonnes;
 
-    // sens horaire.
-    if(sens == 1)
-    {
-        for(int i = 0; i < *p_lignes; i++)
-            {
-                for(int j = 0; j < *p_colonnes; j++)
-                {
-                    matrice2[i][j].valeurR = matrice[j][*p_colonnes-i].valeurR;
-                    matrice2[i][j].valeurG = matrice[j][*p_colonnes-i].valeurG;
-                    matrice2[i][j].valeurB = matrice[j][*p_colonnes-i].valeurB;
-                }
-            }
-    }
-    else if(sens == 0)
-    {
-        for(int i = 0; i < *p_lignes; i++)
-            {
-                for(int j = 0; j < *p_colonnes; j++)
-                {
-                    matrice2[i][j].valeurR = matrice[*p_lignes-j][i].valeurR;
-                    matrice2[i][j].valeurG = matrice[*p_lignes-j][i].valeurG;
-                    matrice2[i][j].valeurB = matrice[*p_lignes-j][i].valeurB;
-                }
-            }
-            *p_lignes = colonnes2;
-            *p_colonnes = lignes2;
-    }
-    else
-    {
+    if(sens != 0 && sens != 1)
         return ERREUR;
-    }
+    
+    
+    struct RGB MatriceCopie[MAX_HAUTEUR][MAX_LARGEUR];
 
+	for (int a=0;a<*p_lignes;a++)
+	{
+		for (int b=0;b<*p_colonnes;b++)
+		{
+			MatriceCopie[a][b].valeurR=matrice[a][b].valeurR;
+            MatriceCopie[a][b].valeurG=matrice[a][b].valeurG;
+            MatriceCopie[a][b].valeurB=matrice[a][b].valeurB;
+		}
+	}
+
+	for (int i=0;i<*p_lignes;i++)
+	{
+		for (int j=0;j<*p_colonnes;j++)
+		{
+			if (sens==1)
+			{
+				matrice[j][*p_lignes-i-1].valeurR=MatriceCopie[i][j].valeurR;
+                matrice[j][*p_lignes-i-1].valeurG=MatriceCopie[i][j].valeurG;
+                matrice[j][*p_lignes-i-1].valeurB=MatriceCopie[i][j].valeurB;
+
+			}
+			else
+			{
+				matrice[*p_colonnes-j-1][i].valeurR=MatriceCopie[i][j].valeurR;
+                matrice[*p_colonnes-j-1][i].valeurG=MatriceCopie[i][j].valeurG;
+                matrice[*p_colonnes-j-1][i].valeurB=MatriceCopie[i][j].valeurB;
+			}
+		}
+	}
     *p_lignes = colonnes2;
     *p_colonnes = lignes2;
     return OK;

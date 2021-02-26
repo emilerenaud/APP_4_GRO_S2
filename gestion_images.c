@@ -26,16 +26,16 @@ int main()
     // test_pgm_creer_histogramme(); // OK 100%
     // test_pgm_eclaircir_noircir(); // OK 100%
     // test_pgm_creer_negatif();   // OK 100%
-    // test_pgm_extraire(); // valeur extraite pas bonne
+    // test_pgm_extraire(); // OK 100%
     // test_pgm_sont_identiques(); // OK 100%
-    // test_pgm_pivoter90(); // valeur une fois tourner mauvaise
+    // test_pgm_pivoter90(); // OK 100%
 
     // ************ COULEUR ************ //
     // test_ppm_lire(); // OK 100%
     // test_ppm_ecrire(); // OK 100%
     // test_ppm_copier(); // OK 100%
     // test_ppm_sont_identiques(); // OK 100%
-    // test_ppm_pivoter90(); // Valeur une fois tourner mauvaise 
+    // test_ppm_pivoter90(); // OK 100%
 
     AutoValidation();
     // int lignes1, colonnes1;
